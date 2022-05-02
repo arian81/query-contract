@@ -1,1 +1,2 @@
+fc061af47751b803bc3478c3e0c3ac4de69ea9aa154e36151117df00d8f336f2  query_contract-aarch64.wasm
 fed5e5b993a90cc212ef8d9b5a160744947ab430fccea6a4a5ccc6dbc75eed14  query_contract.wasm

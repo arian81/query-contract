@@ -1,7 +1,7 @@
 // Import all the libraries that we will use
 use crate::errors::ContractError;
 use crate::msg::{ExecuteMsg, InstantiateMsg, MigrateMsg, QueryMsg};
-use crate::query::try_query_contract;
+use crate::query::{try_get_luna_price, try_swap_ust_luna_astro, try_swap_ust_luna_tswap};
 use crate::state::{Config, CONFIG};
 use cosmwasm_std::entry_point;
 use cosmwasm_std::{
@@ -42,13 +42,22 @@ pub fn execute(
 }
 
 // Here we define the entry point to the contract for querying it.
+// #[cfg_attr(not(feature = "library"), entry_point)]
+// pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
+//     match msg {
+//         QueryMsg::LunaPrice {} => to_binary(&try_get_luna_price(deps)?),
+//         _ => Err(StdError::generic_err("Unexpected query message")),
+//     }
+// }
+
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
-        QueryMsg::QueryContract { contract, wallet } => {
-            to_binary(&try_query_contract(deps, contract, wallet)?)
-        }
+        QueryMsg::AstroPrice { amount } => to_binary(&try_swap_ust_luna_astro(deps, amount)?),
+        QueryMsg::TerraSwapPrice { amount } => to_binary(&try_swap_ust_luna_tswap(deps, amount)?),
+        QueryMsg::LunaPrice {} => to_binary(&try_get_luna_price(deps)?),
         _ => Err(StdError::generic_err("Unexpected query message")),
+        //     }
     }
 }
 
